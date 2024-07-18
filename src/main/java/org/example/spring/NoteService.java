@@ -17,8 +17,8 @@ import java.util.concurrent.atomic.AtomicLong;
 public class NoteService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NoteService.class);
-   private final Map<Long, Note> noteMap = new HashMap<>();
-   private final AtomicLong idGenerator = new AtomicLong();
+    private final Map<Long, Note> noteMap = new HashMap<>();
+    private final AtomicLong idGenerator = new AtomicLong();
 
 
     public List<Note> listAll() {
@@ -36,7 +36,7 @@ public class NoteService {
         if (noteMap.containsKey(id)) {
             noteMap.remove(id);
         } else {
-            throw new RuntimeException("There is no note with such ID");
+            throw new IllegalArgumentException("There is no note with such ID");
         }
     }
 
@@ -46,7 +46,7 @@ public class NoteService {
             oldNote.setContent(note.getContent());
             oldNote.setTitle(note.getTitle());
         } else {
-            throw new RuntimeException("There is no note with such ID");
+            throw new IllegalArgumentException("There is no note with such ID");
         }
     }
 
@@ -54,13 +54,21 @@ public class NoteService {
         if (noteMap.containsKey(id)) {
             return noteMap.get(id);
         } else {
-            throw new RuntimeException("There is no note with such ID");
+            throw new IllegalArgumentException("There is no note with such ID");
         }
     }
 
     @PostConstruct
     public void postConstruct() {
         LOGGER.info("Bean created: {}", this.getClass().getName());
+        Note note = new Note();
+        note.setTitle("Title");
+        note.setContent("Content");
+        Note note2 = new Note();
+        note2.setTitle("nature");
+        note2.setContent("autumn");
+        add(note);
+        add(note2);
     }
 
 }
